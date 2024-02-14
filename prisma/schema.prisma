@@ -7,26 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Company {
+model UserDatabase {
   id        String   @id @default(uuid()) @db.Uuid()
-  name      String   @unique
+  name      String
   email     String   @unique
+  password  String
   createdAt DateTime @default(now()) @map("created_at")
 
-  users User[]
-
-  @@map("companies")
-}
-
-model User {
-  id           String   @id @default(uuid()) @db.Uuid()
-  name         String   @unique
-  email        String   @unique
-  passwordHash String   @map("password_hash")
-  companyId    String   @map("company_id") @db.Uuid()
-  createdAt    DateTime @default(now()) @map("created_at")
-
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  projects UserOnProjectDatabase[]
 
   @@map("users")
+}
+
+model ProjectDatabase {
+  id        String   @id @default(uuid()) @db.Uuid()
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  users      UserOnProjectDatabase[]
+  namespaces NamespaceDatabase[]
+  languages  LanguageDatabase[]
+
+  @@map("projects")
+}
+
+model UserOnProjectDatabase {
+  id        String   @id @default(uuid()) @db.Uuid()
+  userId    String   @map("user_id") @db.Uuid()
+  projectId String   @map("project_id") @db.Uuid()
+  addedAt   DateTime @default(now()) @map("added_at")
+
+  user    UserDatabase    @relation(fields: [userId], references: [id])
+  project ProjectDatabase @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
+  @@map("users_on_projects")
+}
+
+model LanguageDatabase {
+  id        String   @id @default(uuid()) @db.Uuid()
+  title     String
+  code      String
+  projecId  String   @map("project_id") @db.Uuid()
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project ProjectDatabase @relation(fields: [projecId], references: [id])
+
+  words WordDatabase[]
+
+  @@unique([code, projecId])
+  @@map("languages")
+}
+
+model NamespaceDatabase {
+  id        String   @id @default(uuid()) @db.Uuid()
+  name      String
+  projectId String   @map("project_id") @db.Uuid()
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project ProjectDatabase @relation(fields: [projectId], references: [id])
+
+  words WordDatabase[]
+
+  @@unique([name, projectId])
+  @@map("namespaces")
+}
+
+model WordDatabase {
+  id          String   @id @default(uuid()) @db.Uuid()
+  key         String
+  content     String?
+  languageId  String   @map("language_id") @db.Uuid()
+  namespaceId String   @map("namespace_id") @db.Uuid()
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  language  LanguageDatabase  @relation(fields: [languageId], references: [id])
+  namespace NamespaceDatabase @relation(fields: [namespaceId], references: [id])
+
+  @@unique([key, languageId, namespaceId])
+  @@map("words")
 }
