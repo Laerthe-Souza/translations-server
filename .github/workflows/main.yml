@@ -60,6 +60,7 @@ jobs:
         run: |
           source ./deploy/scripts/env-replacer.sh ./deploy/k8s/secrets.yaml
           source ./deploy/scripts/env-replacer.sh ./deploy/k8s/deployment.yaml
+          source ./deploy/scripts/env-replacer.sh ./deploy/k8s/hpa.yaml
           source ./deploy/scripts/env-replacer.sh ./deploy/k8s/service.yaml
           source ./deploy/scripts/env-replacer.sh ./deploy/k8s/ingress.yaml
 
