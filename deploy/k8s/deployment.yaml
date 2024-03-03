@@ -18,6 +18,13 @@ spec:
       containers:
         - name: {{CONTAINER_NAME}}
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 10m
+            limits:
+              memory: 200Mi
+              cpu: 100m
           ports:
             - containerPort: {{CONTAINER_PORT}}
           envFrom:
