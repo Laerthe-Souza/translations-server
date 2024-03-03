@@ -42,8 +42,8 @@ jobs:
       - name: Set up GKE credentials
         uses: google-github-actions/get-gke-credentials@v2.1.0
         with:
-          cluster_name: ${{secrets.GKE_CLUSTER_NAME}}
-          location: ${{secrets.GKE_CLUSTER_ZONE}}
+          cluster_name: ${{vars.GKE_CLUSTER_NAME}}
+          location: ${{vars.GKE_CLUSTER_ZONE}}
 
       - name: Replace k8s manifests variables
         run: |
