@@ -29,6 +29,13 @@ jobs:
 
   CD:
     environment: dev
+    env:
+      CONTAINER_NAME: ${{vars.CONTAINER_NAME}}
+      CONTAINER_NAMESPACE: ${{vars.CONTAINER_NAMESPACE}}
+      CONTAINER_HOST: ${{vars.CONTAINER_HOST}}
+      CONTAINER_PORT: ${{vars.CONTAINER_PORT}}
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      HASH_PASSWORD_SALT: ${{secrets.HASH_PASSWORD_SALT}}
     runs-on: ubuntu-latest
     needs: [CI]
     steps:
