@@ -40,6 +40,7 @@ jobs:
       CONTAINER_REPLICAS: ${{vars.CONTAINER_REPLICAS}}
       HPA_MIN_REPLICAS: ${{vars.HPA_MIN_REPLICAS}}
       HPA_MAX_REPLICAS: ${{vars.HPA_MAX_REPLICAS}}
+      IMAGE_TAG: laerthesouzadeveloper/translations-server:${{github.run_number}}
     runs-on: ubuntu-latest
     needs: [CI]
     steps:
@@ -67,6 +68,6 @@ jobs:
       - name: Apply k8s manifests
         uses: Azure/k8s-deploy@v4.9
         with:
-          images: laerthesouzadeveloper/translations-server:${{github.run_number}}
+          namespace: ${{vars.CONTAINER_NAMESPACE}}
           manifests: ./deploy/k8s
       
