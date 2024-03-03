@@ -47,10 +47,10 @@ jobs:
 
       - name: Replace k8s manifests variables
         run: |
-          ./deploy/scripts/env-replacer.sh ./deploy/k8s/secrets.yaml
-          ./deploy/scripts/env-replacer.sh ./deploy/k8s/deployment.yaml
-          ./deploy/scripts/env-replacer.sh ./deploy/k8s/service.yaml
-          ./deploy/scripts/env-replacer.sh ./deploy/k8s/ingress.yaml
+          source ./deploy/scripts/env-replacer.sh ./deploy/k8s/secrets.yaml
+          source ./deploy/scripts/env-replacer.sh ./deploy/k8s/deployment.yaml
+          source ./deploy/scripts/env-replacer.sh ./deploy/k8s/service.yaml
+          source ./deploy/scripts/env-replacer.sh ./deploy/k8s/ingress.yaml
 
       - name: Apply k8s manifests
         uses: Azure/k8s-deploy@v4.9
