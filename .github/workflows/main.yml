@@ -24,7 +24,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            laerthesouzadeveloper/translations-server:${github.run_number}
+            laerthesouzadeveloper/translations-server:${{github.run_number}}
             laerthesouzadeveloper/translations-server:latest
           
       
