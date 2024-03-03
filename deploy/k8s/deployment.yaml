@@ -17,6 +17,7 @@ spec:
         - name: {{IMAGE_PULL_SECRETS_NAME}}
       containers:
         - name: {{CONTAINER_NAME}}
+          image: {{IMAGE_TAG}}
           imagePullPolicy: Always
           resources:
             requests:
