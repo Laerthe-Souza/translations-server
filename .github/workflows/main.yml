@@ -4,28 +4,29 @@ on:
   push: 
     branches: [main]
 
+env:
+  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/laerthesouzadeveloper/translations-server:${{github.run_number}}"
+
 jobs:
   CI:
     environment: dev
     runs-on: ubuntu-latest
+    env:
+      ARTIFACT_REGISTRY_ZONE: ${{vars.ARTIFACT_REGISTRY_ZONE}}
     steps:
       - uses: actions/checkout@v4.1.1
 
-      - name: Docker hub authentication
-        uses: docker/login-action@v3.0.0
+      - id: "google_auth"
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2.1.2
         with:
-          username: ${{secrets.DOCKERHUB_USER}}
-          password: ${{secrets.DOCKERHUB_PASSWORD}}
-      
+          credentials_json: ${{secrets.GCP_CREDENTIALS}}
+
+      - name: Authenticate Docker with Artifact Registry
+        run: cat ${{steps.google_auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev
+
       - name: Build docker image
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: ./
-          file: ./Dockerfile
-          push: true
-          tags: |
-            laerthesouzadeveloper/translations-server:${{github.run_number}}
-            laerthesouzadeveloper/translations-server:latest
+        run: docker build -t "$IMAGE_TAG" . -f ./Dockerfile
 
   CD:
     environment: dev
