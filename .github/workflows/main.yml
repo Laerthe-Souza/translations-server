@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${env.GITHUB_REPOSITORY}:${{github.run_number}}"
+  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${{env.GITHUB_REPOSITORY}}:${{github.run_number}}"
 
 jobs:
   CI:
