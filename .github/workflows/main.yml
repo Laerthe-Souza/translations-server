@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/laerthesouzadeveloper/translations-server:${{github.run_number}}"
+  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${env.GITHUB_REPOSITORY}:${{github.run_number}}"
 
 jobs:
   CI:
@@ -21,19 +21,13 @@ jobs:
           username: _json_key
           password: ${{secrets.GCP_CREDENTIALS}}
 
-      - name: Tag Docker image and push to Google Artifact Registry
+      - name: Push docker image to Google Artifact Registry
         uses: docker/build-push-action@v5.1.0
         with:
           context: ./
           file: ./Dockerfile
           push: true
           tags: ${{env.IMAGE_TAG}}
-
-      # - name: Authenticate Docker with Artifact Registry
-      #   run: echo ${{secrets.BASE64_GCP_CREDENTIALS}} | docker login -u _json_key_base64 --password-stdin https://${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev
-
-      # - name: Build docker image
-      #   run: docker build -t "$IMAGE_TAG" . -f ./Dockerfile
 
   CD:
     environment: dev
