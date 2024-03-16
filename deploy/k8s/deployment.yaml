@@ -4,7 +4,6 @@ metadata:
   name: {{CONTAINER_NAME}}-deployment
   namespace: {{CONTAINER_NAMESPACE}}
 spec:
-  replicas: {{CONTAINER_REPLICAS}}
   selector:
     matchLabels:
       app: {{CONTAINER_NAME}}-deployment
