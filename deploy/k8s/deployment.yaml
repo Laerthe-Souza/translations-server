@@ -23,7 +23,7 @@ spec:
               memory: 50Mi
               cpu: 10m
             limits:
-              memory: 200Mi
+              memory: 500Mi
               cpu: 100m
           ports:
             - containerPort: {{CONTAINER_PORT}}
