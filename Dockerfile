@@ -14,4 +14,4 @@ RUN yarn build
 
 EXPOSE 3333
 
-CMD yarn start:prod
+CMD yarn prisma migrate deploy && yarn start:prod
