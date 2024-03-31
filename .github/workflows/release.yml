@@ -6,7 +6,7 @@ on:
       - 'v*'    
 
 env:
-  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${{github.repository}}:latest"
+  IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${{github.repository}}:${{github.ref_name}}"
 
 jobs:
   CI:
@@ -46,6 +46,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [CI]
     steps:
+      - name: Show image tag
+        shell: bash
+        run: echo $IMAGE_TAG
+
       - uses: actions/checkout@v4.1.1
 
       - name: Authenticate to Google Cloud
