@@ -1,8 +1,9 @@
 name: CI/CD - Release tag
 
 on:
-  push: 
-    branches: [v*]
+  push:
+    tags:        
+      - 'v*'    
 
 env:
   IMAGE_TAG: "${{vars.ARTIFACT_REGISTRY_ZONE}}-docker.pkg.dev/${{vars.GOOGLE_PROJECT_ID}}/${{vars.ARTIFACT_REGISTRY_REPOSITORY}}/${{github.repository}}:latest"
